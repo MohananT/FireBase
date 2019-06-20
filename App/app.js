@@ -8,6 +8,7 @@ function renderCafe(doc) {
     let city = document.createElement('span');
     let cross = document.createElement('div');
 
+    li.setAttribute('data-id', doc.id);
     name.textContent = data.name;
     city.textContent = data.city;
     cross.textContent = 'x';
@@ -16,9 +17,17 @@ function renderCafe(doc) {
     li.appendChild(city);
     li.appendChild(cross);
     cafeList.appendChild(li);
+
+    // delete doc
+
+    cross.addEventListener('click', (e) => {
+        let id = e.target.parentElement.getAttribute('data-id');
+        db.collection('cafes').doc(id).delete();
+    });
 }
 
 // get data from firestore
+// db.collection('cafes').where('city','==','tirupur').get()
 db.collection('cafes').get()
 .then((snapshot) => {
     snapshot.docs.forEach(doc => {
